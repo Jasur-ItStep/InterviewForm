@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingBottom="40dp"
+        tools:context=".MainActivity">
+
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="1">
+
+            <TableRow
+                android:id="@+id/fullName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/fullNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:labelFor="@id/fullNameInput"
+                    android:text="ФИО:"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/fullNameInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:ems="10"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:inputType="text"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/age"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/ageLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:labelFor="@id/ageInput"
+                    android:text="Возраст:"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/ageInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:ems="10"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:inputType="number"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/salary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/salaryLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:labelFor="@id/ageInput"
+                    android:text="Уровень ЗП:"
+                    android:textSize="16sp" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+            </TableRow>
+
+
+        </TableLayout>
+
+        <LinearLayout
+            android:id="@+id/testContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/test1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:background="@drawable/border"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/question"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Сколько типов данных в языке Java?"
+                    android:textAlignment="center" />
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/radioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="7dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="6" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="7dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="7" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="7dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="8" />
+
+                    <RadioButton
+                        android:id="@+id/radioButton4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="7dp"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="9" />
+                </RadioGroup>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</ScrollView>
