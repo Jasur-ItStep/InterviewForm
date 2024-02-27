@@ -99,71 +99,18 @@
         </TableLayout>
 
         <LinearLayout
-            android:id="@+id/testContainer"
+            android:id="@+id/allTestsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"/>
 
-            <LinearLayout
-                android:id="@+id/test1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/border"
-                android:orientation="vertical"
-                android:padding="5dp">
-
-                <TextView
-                    android:id="@+id/question"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:text="Сколько типов данных в языке Java?"
-                    android:textAlignment="center" />
-
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <RadioButton
-                        android:id="@+id/radioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="7dp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="6" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="7dp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="7" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="7dp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="8" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="7dp"
-                        android:fontFamily="@font/montserrat_bold"
-                        android:text="9" />
-                </RadioGroup>
-            </LinearLayout>
-
-
-        </LinearLayout>
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Есть опыт работы от 2 лет" />
 
 
     </LinearLayout>
