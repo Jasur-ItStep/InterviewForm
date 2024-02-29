@@ -20,32 +20,6 @@
             android:stretchColumns="1">
 
             <TableRow
-                android:id="@+id/fullName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="30dp">
-
-                <TextView
-                    android:id="@+id/fullNameLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
-                    android:fontFamily="@font/montserrat_regular"
-                    android:labelFor="@id/fullNameInput"
-                    android:text="ФИО:"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/fullNameInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="60dp"
-                    android:ems="10"
-                    android:fontFamily="@font/montserrat_bold"
-                    android:inputType="text"
-                    android:textSize="16sp" />
-            </TableRow>
-
-            <TableRow
                 android:id="@+id/age"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -72,6 +46,32 @@
             </TableRow>
 
             <TableRow
+                android:id="@+id/fullName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/fullNameLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/montserrat_regular"
+                    android:labelFor="@id/fullNameInput"
+                    android:text="ФИО:"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/fullNameInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="60dp"
+                    android:ems="10"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:inputType="text"
+                    android:textSize="16sp" />
+            </TableRow>
+
+            <TableRow
                 android:id="@+id/salary"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -88,9 +88,10 @@
                     android:textSize="16sp" />
 
                 <SeekBar
-                    android:id="@+id/seekBar"
+                    android:id="@+id/salarySeekBar"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:max="1600" />
 
 
             </TableRow>
@@ -102,15 +103,50 @@
             android:id="@+id/allTestsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:orientation="vertical" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/workExperience"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="Есть опыт работы от 2 лет" />
+            android:text="Есть опыт работы от 2 лет"
+            android:visibility="visible" />
+
+        <CheckBox
+            android:id="@+id/teamWork"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Есть навыки командной работы"
+            android:visibility="visible" />
+
+        <CheckBox
+            android:id="@+id/businessTrip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Готов к командировкам" />
+
+        <Button
+            android:id="@+id/sendBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:enabled="false"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="Сдать тест" />
+
+        <TextView
+            android:id="@+id/result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:visibility="invisible" />
 
 
     </LinearLayout>

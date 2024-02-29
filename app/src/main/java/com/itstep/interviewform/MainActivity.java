@@ -2,16 +2,24 @@ package com.itstep.interviewform;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -29,10 +37,27 @@ import java.util.ArrayList;
 // 4. Когда закрыли программу: onDestroy
 // 5. Когда перевернули телефон: onDestroy, onCreate, onStart, onResume
 
-public class MainActivity extends AppCompatActivity {
+/*
+Атрибуты:
+    visibility - видимость предмета (invisible, visible, gone)
+    setVisibility(View.INVISIBLE)
 
+    clickable / enabled - делает предмет либо нажимаемым, либо нет
+    отличие, что у enabled есть серый фон, когда нельзя нажать
+ */
+
+public class MainActivity extends AppCompatActivity {
     private LinearLayout allTestsContainer;
-    private final ArrayList<Quiz> quizzes = new ArrayList<>();;
+    private EditText fullNameInput, ageInput;
+    private SeekBar salarySeekBar;
+    private CheckBox workExperienceCheckBox,
+            teamWorkCheckBox,
+            businessTripCheckBox;
+    private Button sendBtn;
+
+    private Form currentForm;
+
+    private final ArrayList<Quiz> quizzes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +67,111 @@ public class MainActivity extends AppCompatActivity {
 
         // Получить контейнер со всеми тестами
         allTestsContainer = findViewById(R.id.allTestsContainer);
+        // allTestsContainer.setVisibility(View.INVISIBLE);
+
+        // Получить текстовое поле для ФИО
+        fullNameInput = findViewById(R.id.fullNameInput);
+
+        // Получить текстовое поле для возраста
+        ageInput = findViewById(R.id.ageInput);
+
+        // Получить ползунок для зарплаты
+        salarySeekBar = findViewById(R.id.salarySeekBar);
+
+        // Получить поле с галочкой для опыта, командной работы, командировкам
+        workExperienceCheckBox = findViewById(R.id.workExperience);
+        teamWorkCheckBox = findViewById(R.id.teamWork);
+        businessTripCheckBox = findViewById(R.id.businessTrip);
+
+        // Получить кнопку для отправки теста
+        sendBtn = findViewById(R.id.sendBtn);
+
         fillQuizzes(); // Заполняем квизы
+
+        // Создает текущую форму
+        currentForm = new Form(quizzes.size());
 
         // Для каждого квиза создать контейнер
         for (Quiz quiz : quizzes) {
             createQuizContainer(quiz);
         }
+
+
+        // Навешиваем события на виджеты
+
+        // Даем слушатель изменения текста
+        fullNameInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {
+                currentForm.setFullName(fullNameInput.getText().toString());
+            }
+        });
+
+        // Даем слушатель изменения фокуса на элементе
+        ageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                // String -> int ( Integer.parseInt )
+                if (b) return;
+                String ageText = ageInput.getText().toString();
+                if (ageText.isEmpty()) return;
+
+                int age = Integer.parseInt(ageText);
+                if (age >= 21 && age < 40) {
+                    ageInput.setTextColor(Color.BLACK);
+                    currentForm.setAge(age);
+                    return;
+                }
+                Toast.makeText(
+                        MainActivity.this,
+                        "Возраст нам нужен от 21 до 40 :)",
+                        Toast.LENGTH_LONG)
+                .show();
+                ageInput.setTextColor(Color.RED);
+            }
+        });
+
+        // Даем слушатель изменения прогресса на ползунке
+        salarySeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                int progress = salarySeekBar.getProgress();
+                if (progress >= 800 && progress <= 1600) {
+                    Toast.makeText(
+                                    MainActivity.this,
+                                    "Желаемая ЗП: $" + progress,
+                                    Toast.LENGTH_LONG)
+                            .show();
+                    currentForm.setSalary(progress);
+                    return;
+                }
+
+                Toast.makeText(
+                                MainActivity.this,
+                                "Зарплату можем предложить только от $800 до $1600",
+                                Toast.LENGTH_LONG)
+                        .show();
+            }
+        });
+
 
     }
 
