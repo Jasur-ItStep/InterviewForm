@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /*
     System.out.println("Testing logs");-- старый способ вывода
@@ -47,17 +49,20 @@ import java.util.ArrayList;
  */
 
 public class MainActivity extends AppCompatActivity {
-    private LinearLayout allTestsContainer;
-    private EditText fullNameInput, ageInput;
-    private SeekBar salarySeekBar;
-    private CheckBox workExperienceCheckBox,
-            teamWorkCheckBox,
-            businessTripCheckBox;
-    private Button sendBtn;
+    private LinearLayout allTestsContainer; // Контейнер где находятся все тесты
+    private EditText fullNameInput, ageInput; // Текстовые поля ФИО и возраста
+    private SeekBar salarySeekBar; // Ползунок для ЗП
+    private CheckBox workExperienceCheckBox, // Чек-боксы Опыт работы
+            teamWorkCheckBox, // Чек-боксы Командная работа
+            businessTripCheckBox; // Чек-боксы Готовность к командировкам
+    private Button sendBtn; // Кнопка для отправки теста
+    private TextView resultTxt;  // Невидимый текст с результатом
 
-    private Form currentForm;
+    private Form currentForm; // Текущая анкета, которую заполняет пользователь
+    private final ArrayList<Quiz> quizzes = new ArrayList<>(); // Список вопросов
+    private int score = 0; // Сколько баллов начислено у пользователя
+    private int maxScore = 0; // Максимальное количество баллов
 
-    private final ArrayList<Quiz> quizzes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,16 +91,22 @@ public class MainActivity extends AppCompatActivity {
         // Получить кнопку для отправки теста
         sendBtn = findViewById(R.id.sendBtn);
 
+        // Получить текст с результатом
+        resultTxt = findViewById(R.id.result);
+
         fillQuizzes(); // Заполняем квизы
 
         // Создает текущую форму
         currentForm = new Form(quizzes.size());
 
         // Для каждого квиза создать контейнер
-        for (Quiz quiz : quizzes) {
-            createQuizContainer(quiz);
-        }
 
+//        for (Quiz quiz : quizzes) {
+//            createQuizContainer(quiz);
+//        }
+        for (int i = 0; i < quizzes.size(); i++) {
+            createQuizContainer(quizzes.get(i), i);
+        }
 
         // Навешиваем события на виджеты
 
@@ -112,31 +123,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 currentForm.setFullName(fullNameInput.getText().toString());
+                sendBtn.setEnabled(currentForm.validateData());
             }
         });
 
         // Даем слушатель изменения фокуса на элементе
-        ageInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                // String -> int ( Integer.parseInt )
-                if (b) return;
-                String ageText = ageInput.getText().toString();
-                if (ageText.isEmpty()) return;
+        ageInput.setOnFocusChangeListener((view, isFocused) -> {
+            // String -> int ( Integer.parseInt )
+            if (isFocused) return;
+            String ageText = ageInput.getText().toString();
+            if (ageText.isEmpty()) return;
 
-                int age = Integer.parseInt(ageText);
-                if (age >= 21 && age < 40) {
-                    ageInput.setTextColor(Color.BLACK);
-                    currentForm.setAge(age);
-                    return;
-                }
-                Toast.makeText(
-                        MainActivity.this,
-                        "Возраст нам нужен от 21 до 40 :)",
-                        Toast.LENGTH_LONG)
-                .show();
-                ageInput.setTextColor(Color.RED);
+            int age = Integer.parseInt(ageText);
+            if (age >= 21 && age < 40) {
+                ageInput.setTextColor(Color.BLACK);
+                currentForm.setAge(age);
+                sendBtn.setEnabled(currentForm.validateData());
+                return;
             }
+            sendBtn.setEnabled(false);
+            Toast.makeText(
+                    MainActivity.this,
+                    "Возраст нам нужен от 21 до 40 :)",
+                    Toast.LENGTH_LONG)
+            .show();
+            ageInput.setTextColor(Color.RED);
         });
 
         // Даем слушатель изменения прогресса на ползунке
@@ -161,9 +172,11 @@ public class MainActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG)
                             .show();
                     currentForm.setSalary(progress);
+                    sendBtn.setEnabled(currentForm.validateData());
                     return;
                 }
 
+                sendBtn.setEnabled(false);
                 Toast.makeText(
                                 MainActivity.this,
                                 "Зарплату можем предложить только от $800 до $1600",
@@ -171,8 +184,59 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         });
+        // Даем слушатель изменения галочки в чек-боксе (для опыта работы)
+        workExperienceCheckBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            currentForm.setWorkExperience(isChecked);
+        });
+        // Даем слушатель изменения галочки в чек-боксе (для командной работы)
+        teamWorkCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            currentForm.setTeamWork(isChecked);
+        });
+        // Даем слушатель изменения галочки в чек-боксе (готов ли к командировкам)
+        businessTripCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            currentForm.setBusinessTrip(isChecked);
+        });
+
+        // Даем слушатель клика на предмет (sendBtn)
+        sendBtn.setOnClickListener(view -> {
+            score = 0;
+            maxScore = 0;
+            if (currentForm.isWorkExperience()) {
+                score += 2; // score = score + 2;
+            }
+            maxScore += 2;
+            if (currentForm.isTeamWork()) {
+                score++; // score = score + 1; score += 1;
+            }
+            maxScore++;
+
+            if (currentForm.isBusinessTrip()) {
+                score++;
+            }
+            maxScore++;
 
 
+
+            // Каждый вариант ответа в answers проверить с каждым ответом в quizzes
+            for(int i = 0; i < quizzes.size(); i++) {
+                if(currentForm.getAnswers()[i].equals(quizzes.get(i).getCorrect())) {
+                    score += 2;
+                }
+                maxScore += 2;
+            }
+
+
+            resultTxt.setVisibility(View.VISIBLE);
+
+            if (score < 10 ) {
+                resultTxt.setText("Вы не прошли этап тестирования, так как набрали "
+                        + score +"/" + maxScore + ":( Попробуйте еще!");
+            } else {
+                resultTxt.setText("Вы прошли этап тестирования, набрав " + score + "/" + maxScore + "!" +
+                        "Нашел отдел HR скоро с Вами свяжутся!");
+            }
+
+        });
     }
 
     private void fillQuizzes() {
@@ -217,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
         ));
     }
 
-    private void createQuizContainer(Quiz quiz) {
+    private void createQuizContainer(Quiz quiz, int index) {
         /* --------------- Создаем контейнер --------------- */
 
         // Создаем контейнер для теста
@@ -321,26 +385,29 @@ public class MainActivity extends AppCompatActivity {
         // Для каждого варианта из списка вариантов
         for( String choice : quiz.getChoices()) {
             RadioButton radioButton = new RadioButton(this);
-
             ViewGroup.MarginLayoutParams radioButtonLayout = new ViewGroup.MarginLayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
             );
-
             radioButtonLayout.setMargins(7,0,7,0);
-
             radioButton.setLayoutParams(radioButtonLayout);
-
             radioButton.setTypeface(getResources().getFont(R.font.montserrat_bold));
-
             radioButton.setText(choice);
-
             radioButton.setId(View.generateViewId());
-
             radioButtonsContainer.addView(radioButton);
-
         }
         /* --------------- Создаем варианты ответов --------------- */
+
+        // Вешаем событие выбора на RadioGroup
+        radioButtonsContainer.setOnCheckedChangeListener((radioGroup, id) -> {
+            RadioButton checkRadioBtn = radioButtonsContainer.findViewById(id);
+            if (checkRadioBtn != null) {
+                String choice = checkRadioBtn.getText().toString();
+                currentForm.getAnswers()[index] = choice;
+                // Log.d("USER SELECT", "Your choices: " + Arrays.toString(currentForm.getAnswers()));
+            }
+        });
+
 
         allTestsContainer.addView(testContainer);
     }

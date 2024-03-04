@@ -14,6 +14,21 @@ public class Form {
         // Конструктор для создания ответов в
         // зависимости от количества вопросов
         answers = new String[quizCount];
+        // answers = [0, 1, 2, 3, 4]
+    }
+
+    public boolean validateData() {
+        if (
+                fullName == null
+                || fullName.isEmpty()
+                || salary < 800
+                || salary > 1600
+                || age < 21
+                || age >= 40
+        ) {
+            return false;
+        }
+        return true;
     }
 
     public String getFullName() {
